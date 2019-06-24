@@ -12,7 +12,8 @@ const image = require('./controllers/image');
 
 const db = knex({
   client: 'pg',
-  connection: 'postgres://postgres:pedja@localhost:5432/smart-brain',
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
   searchPath: ['knex', 'public']
 });
 
@@ -21,7 +22,7 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> { res.send(db.users) })
+app.get('/', (req, res)=> { res.send('it is working') })
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db)})
